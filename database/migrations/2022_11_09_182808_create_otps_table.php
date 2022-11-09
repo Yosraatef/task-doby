@@ -13,15 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('otps', function (Blueprint $table) {
             $table->id();
-            $table->string('username');
-            $table->string('email')->unique();
-            $table->text('bio');
-            $table->enum('type',['type1' , 'type2','type3']);
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->string('phone')->unique()->nullable();
+            $table->string('email')->nullable();
+            $table->string('code')->default(random_int(1111, 9999));
+            $table->boolean('is_sent')->default(false);
+            $table->timestamp('sent_at')->default(\DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamps();
         });
     }
@@ -33,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('otps');
     }
 };
